@@ -1,3 +1,5 @@
+// Not my code, from https://www.javascripttutorial.net/javascript-queue/
+
 export default class Queue {
     constructor() {
       this.elements = {};
