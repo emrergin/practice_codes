@@ -26,8 +26,10 @@ function dominantDirection(text) {
         return null;
     }
   
-    let resultAdayi= countBy(text,a=>characterScript(a)?.direction);    
-    console.log(resultAdayi);
+    let resultAdayi= countBy(text.split(``).map(a=>a.charCodeAt(0)),a=>characterScript(a)?.direction);   
+    resultAdayi = resultAdayi.reduce((prev,curr)=>prev.count>curr.count? prev:curr,{name:`undefined`,count:0}); 
+    // console.log(resultAdayi);
+    return resultAdayi.name;
 
 }
 

@@ -105,3 +105,6 @@ dist
 
 # Ignore test cases
 *.txt
+
+#ignore code already given
+prerequisites/

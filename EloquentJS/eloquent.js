@@ -1,65 +1,6 @@
 
 
 
-
-
-class Matrix {
-	constructor(x,y) {
-		this.x = x;
-		this.y = y;
-	}
-	plus(this, b) {
-		return {x: this.x+b.x , y:this.y+b.y};
-	}
-	minus(this, b) {
-		return {x: this.x-b.x , y:this.y-b.y};
-	}
-	length (x, y) {
-		return Math.sqrt(this.x^2+this.y^2)
-	}
-}
-
-class Group {
-	constructor() {
-		this.elements=[];
-	}
-	add(b) {
-		if (this.elements.indexOf(b)===-1){this.elements.push(b)}
-	}
-	delete(b) {
-		if (this.elements.indexOf(b)!==-1){this.elements.splice(this.elements.indexOf(b),1)}
-	}
-	has (b) {
-		return this.elements.indexOf(b)!==-1
-	}
-	
-	static from(iterable) {
-		let sonuc = new Group();
-		for (item of iterable){
-			sonuc.add(item);
-		}
-		return sonuc;
-	}
-}
-
-
-class GroupIterator {
-	constructor(group) {
-		this.index = 0
-		this.group = group;
-	}
-	next() {
-		if (this.x == this.group.length) return {done: true};
-		let value = {
-			index: this.index,
-			value: this.group[index]
-		};
-		this.index++
-		return {value, done: false};
-	}
-}
-
-
 specialForms.set = (args, scope) => {
   // Your code here.
   let currentScope=scope;
@@ -70,6 +11,10 @@ specialForms.set = (args, scope) => {
    }
   }
 };
+
+
+
+
 
 
 
