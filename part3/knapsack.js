@@ -10,9 +10,7 @@ const test2 = [
     [4,3]
 ]
 
-// console.log(test);
 function knapsackWeights(arr,C){
-    // console.log(arr.length+1,C+1);
     const A=Array.from(Array(arr.length+1), () => new Array(C+1));
     let size = arr.length;
     
@@ -43,18 +41,11 @@ function knapsackWeightsWithCache(arr,C){
 
     for (let i=1;i<size+1;i++){
         let newImportantPoints=[];
-        let oldImportantPoints=importantPoints[i-1];
-        // console.log(i)
         newImportantPoints.push({start:0,value:0});
         for(let c=1;c<=C;c++){
             
             let lastImportantPoint = newImportantPoints[newImportantPoints.length-1];
-            let v1 = getRelevantImportantPoint(c,oldImportantPoints);
-            let v2=0;
-            if (c-arr[i-1][1]>=0){
-                v2 = getRelevantImportantPoint(c-arr[i-1][1],oldImportantPoints)+arr[i-1][0];
-            }
-            
+            let [v1,v2] = getRelevantImportantPoint(c,arr[i-1][1],arr[i-1][0],importantPoints[i-1]);
 
             if(Math.max(v1,v2)>lastImportantPoint.value){
                 newImportantPoints.push({start:c,value:Math.max(v1,v2)})
@@ -62,22 +53,29 @@ function knapsackWeightsWithCache(arr,C){
         }
         importantPoints.push(newImportantPoints);
     }
-
-    let result = importantPoints.pop();
-    // console.log(result.pop().value);
-    console.log(result.pop().value);
+    console.log(importantPoints.pop().pop().value);
 }
 
-// knapsackWeights(test,10000);
+
 // knapsackWeightsWithCache(challenge,2000000);
 knapsackWeightsWithCache(test,10000);
 knapsackWeightsWithCache(test2,6);
 
-// knapsackWeights(test2,6)
-// knapsackWeightsWithCache(test2,6)
 
-function getRelevantImportantPoint(w,aa){
-    // if (aa<0){return -Infinity;}
-    let aaa = aa.filter(a=>a.start<=w);
-    return aaa[aaa.length-1]?.value||0;
+function getRelevantImportantPoint(w1,minus,plus,aaa){
+    const size = aaa.length;
+    let v1,v2;
+    for(let i=size-1;i>=0;i--){
+        if(aaa[i].start<=w1 && v1===undefined){
+            v1=aaa[i].value;
+            if(w1-minus<0){
+                break;
+            }
+        }
+        if(aaa[i].start<=w1-minus){
+            v2=aaa[i].value+plus;
+            break;
+        }
+    }
+    return [(v1||0),(v2||0)];
 }
