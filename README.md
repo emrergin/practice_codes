@@ -8,3 +8,6 @@
 
 ## More sources
 - Queue code is not mine, I got it from : https://www.javascripttutorial.net/javascript-queue/.
+
+## What I learned
+- Map and Set has a maximum size of $2^24$, enforced by Node V8 engine, see: https://github.com/nodejs/node/issues/37320
