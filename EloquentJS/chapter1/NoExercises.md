@@ -1,0 +1,1 @@
+No exercises in [this chapter](https://eloquentjavascript.net/01_values.html).
