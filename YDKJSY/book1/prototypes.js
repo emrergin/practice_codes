@@ -48,12 +48,9 @@ var slotMachine = {
             if (posPlus1===r.symbols.length){posPlus1=0;}
             return (r.symbols[posPlus1])
         }
-        // TODO
         console.log(this.reels.map(displayPrev));
         console.log(this.reels.map(a=>a.display()));
         console.log(this.reels.map(displayNext));
-            
-
     }
 };
 

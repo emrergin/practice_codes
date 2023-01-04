@@ -24,9 +24,10 @@ function extract12(num,cOff){
 }
 
 function extract12String(num,cOff){
-	let second=num.slice(-cOff)||0;
-	let first=num.slice(0,-cOff) ||0;
-	return [first,second];
+	let strNum=num.toString();
+	let second=strNum.slice(-cOff)||0;
+	let first=strNum.slice(0,-cOff) ||0;
+	return [BigInt(first),BigInt(second)];
 }
 
 
@@ -35,55 +36,58 @@ function karatsuba2(x,y){
 	const karatsubaStack = [];
 	const karatsubaSolution = new Map();	
 	
-	new KaratsubaCall(x,y);
-	let counter=0;
+	new karatsubaCall(x,y);
 	
 	while(karatsubaStack.length>0){
+		
 		let currentX=karatsubaStack[karatsubaStack.length-1].x;
 		let currentY=karatsubaStack[karatsubaStack.length-1].y;
+		let numberofDigits=Math.max(currentX.toString().length,currentY.toString().length);
 		
-		let numberofDigits=Math.min(currentX.length,currentY.length);
-		let converterToUse = numberofDigits>16 ? BigInt : Number;
-		if (numberofDigits%2!==0){numberofDigits++;}
-		let cutOffPoint = (numberofDigits/2);
+		if (numberofDigits%2!==0){
+			numberofDigits++;
+		}
+		let cutOffPoint = (numberofDigits)/2;
 		
 		let [a,b]=extract12String(currentX,cutOffPoint);
 		let [c,d]=extract12String(currentY,cutOffPoint);	
 		
 		let ac = karatsubaSolution.get(`${a}*${c}`);
 		let bd = karatsubaSolution.get(`${b}*${d}`);
-		let abcd = karatsubaSolution.get(`${converterToUse(a)+converterToUse(b)}*${converterToUse(c)+converterToUse(d)}`);
+		let abcd = karatsubaSolution.get(`${a+b}*${c+d}`);
 		
 		if (ac!==undefined && bd!==undefined && abcd!==undefined){
 			let adbc = abcd-ac-bd;		
-			let result = (10**numberofDigits)*ac+bd+(10**(cutOffPoint))*adbc;
+			let result = BigInt((10**numberofDigits))*ac+bd+BigInt((10**(cutOffPoint)))*adbc;
 			karatsubaSolution.set(`${currentX}*${currentY}`,result);
 			karatsubaSolution.set(`${currentY}*${currentX}`,result);
 			karatsubaStack.pop();
 		}
 		else{
 			if (ac===undefined){
-				new KaratsubaCall(a,c);
+				karatsubaCall(a,c);
 			}
 			if (bd===undefined){
-				new KaratsubaCall(b,d);
+				karatsubaCall(b,d);
 			}
 			if (abcd===undefined){
-				new KaratsubaCall(converterToUse(a)+converterToUse(b),converterToUse(c)+converterToUse(d));
+				karatsubaCall(a+b,c+d);
 			}
 		}
 	}
+
 	
 	return (karatsubaSolution.get(`${x}*${y}`));
 	
-	function KaratsubaCall(x,y){
-		this.x=x.toString();
-		this.y=y.toString();
-		if (x.length!==1 || y.length!==1){karatsubaStack.push(this)}
+	function karatsubaCall(x,y){
+		const newCall = {x,y};
+		if (newCall.x.toString().length!==1 || newCall.y.toString().length!==1){karatsubaStack.push(newCall)}
 		else{
-			karatsubaSolution.set(`${x}*${y}`,Number(x)*Number(y));
-			karatsubaSolution.set(`${y}*${x}`,Number(x)*Number(y));
+			karatsubaSolution.set(`${newCall.x}*${newCall.y}`,BigInt(newCall.x)*BigInt(newCall.y));
+			karatsubaSolution.set(`${newCall.y}*${newCall.x}`,BigInt(newCall.x)*BigInt(newCall.y));
 		}
 	}
 }
-console.log(karatsuba2(`3141592653589793238462643383279502884197169399375105820974944592`,`2718281828459045235360287471352662497757247093699959574966967627`));
+
+
+
