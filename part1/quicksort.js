@@ -10193,7 +10193,7 @@ function quickSort(arr,left,right,mode,counter){
 }
 
 
-let arrayToTest=testArray1;
+let arrayToTest=testArray3;
 const numberOfCells = arrayToTest.length;
 let t1=[...arrayToTest];
 let t2=[...arrayToTest];

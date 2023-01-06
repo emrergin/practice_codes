@@ -119,7 +119,7 @@ function toposort(G,rev=false){
 
 function toposortIterative(G,vertices= Array.from(new Set(G. flatMap(a=>[a[0],a[1]]))),rev=false){
 	console.log(`starting toposort.`);
-	const isExplored = new Map();
+	const isExplored = new Set();
 	const labels = new Map();
 	
 	let currentLabel=vertices.length;
@@ -136,7 +136,7 @@ function toposortIterative(G,vertices= Array.from(new Set(G. flatMap(a=>[a[0],a[
 		while(dfsStack.length>0){
 			let v = dfsStack[dfsStack.length-1];			
 			
-			if (isExplored.get(v)){
+			if (isExplored.has(v)){
 				labels.set(v,currentLabel);
 				currentLabel-=1;
 				dfsStack.pop();
@@ -152,7 +152,7 @@ function toposortIterative(G,vertices= Array.from(new Set(G. flatMap(a=>[a[0],a[
 					G.filter(a=>a[0]===v && !isExplored.has(a[1])).map(a=>a[1]);
 				// neighbours= neighbours.filter(a=>!isExplored.has(a));
 					
-				isExplored.set(v,true);
+				isExplored.add(v);
 				for (let vertex of neighbours){
 					dfsStack.push(vertex);
 				}

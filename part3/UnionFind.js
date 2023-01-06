@@ -15,7 +15,7 @@ export default class UnionFind{
     }
 
     find(index){
-        let currentNode = this.store[index-1];
+        let currentNode = this.store[index];
         let currentParent = currentNode.parent;
 
         while(currentParent!==currentNode.self){
