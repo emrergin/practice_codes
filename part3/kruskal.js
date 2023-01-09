@@ -35,9 +35,9 @@ export function unionKruskal(G){
     U.initialize(vertices);
 
     for (let edge of G){
-        if(U.find(edge[0])!==U.find(edge[1])){
+        if(U.find(edge[0]-1)!==U.find(edge[1]-1)){
             T.push(edge);
-            U.union(edge[0],edge[1]);
+            U.union(edge[0]-1,edge[1]-1);
         }
     }
     return T;

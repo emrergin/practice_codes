@@ -1,42 +1,33 @@
-import { promises as fsPromises} from 'fs';
-async function asyncReadFile(filename, interval) {
-    try {
-      const contents = await fsPromises.readFile(filename, 'utf-8');
-    
-      const arr = contents.split(/\r?\n/).map(a=>+a.trim());
-      console.log(`file parsing done.`);
-    //   console.log(arr);
-    
-      let counter =0;
-      for (let tar of interval){
-        if (twoSum(arr,tar)){counter++;}
-      }
+import {readFileSync } from "fs";
 
-      console.log(counter);
-    } catch (err) {
-      console.log(err);
-    }
+let lines = readFileSync(`2sum.txt`,'utf-8')
+                .split(`\n`).map(a=>+a.trim());
+
+
+function getInterval(start,end){
+	return Array.from({length:end-start+1},(a,index)=>start+index);
+}				
+
+const interval=getInterval(-10000,10000);
+
+const S = new Set();
+for (let num of lines){
+    S.add(num);
 }
 
-function twoSum(array,target){
-    const H = new Map();
+let counter =0;
+for (let tar of interval){
+	if (twoSum(lines,tar,S)){counter++;}
+}
 
-    for (let num of array){
-        H.set(num,true);
-    }
+console.log(counter);
 
+function twoSum(array,target){    
+	
     for (let num of array){
-        if (H.get(target-num) && (target-num!== num)){
+        if (S.has(target-num) && (target!== 2*num)){
             return true;
         }
     }
     return false;
 }
-
-function getInterval(start,end){
-    return Array.from({length:end-start+1},(a,index)=>start+index)
-}
-
-asyncReadFile(`./problem12.3.test.txt`,getInterval(3,10))
-
-asyncReadFile(`./problem12.3.txt`,getInterval(-10000,10000))

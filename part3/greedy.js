@@ -50,5 +50,5 @@ function greedy(arr, functionToUse) {
 const greedyRatio = (arr) => greedy(arr, (a, b) => a / b);
 const greedyDiff = (arr) => greedy(arr, (a, b) => a - b);
 
-asyncReadFile(`problem13.4.test.txt`);
+// asyncReadFile(`problem13.4.test.txt`);
 asyncReadFile(`problem13.4.txt`);

@@ -1,20 +1,6 @@
 import {readFileSync } from "fs";
 
 let lines = readFileSync(`problem16.6.txt`, 'utf-8').split(`\n`).map(a=>+a);
-console.log(lines)
-
-const test =[
-    280,
-    618,
-    762,
-    908,
-    409,
-    34,
-    312,
-    277,
-    246,
-    779
-];
 
 function wisWeight(arr){
     let A=[];
@@ -50,11 +36,7 @@ function wisMembers(wis,arr)
 
     return setOfNodes;
 }
-
-let weightArray = wisWeight(test);
-console.log(weightArray[weightArray.length-1]);
-console.log(wisMembers(weightArray,test));
-
 let weightArray2 = wisWeight(lines);
-console.log(weightArray2[weightArray2.length-1]);
-console.log(wisMembers(weightArray2,lines));
+const members = wisMembers(weightArray2,lines);
+
+console.log([1,2, 3, 4, 17, 117, 517,997].map(a=>members.has(a)))

@@ -43,7 +43,6 @@ function knapsackWeightsWithCache(arr,C){
         let newImportantPoints=[];
         newImportantPoints.push({start:0,value:0});
         for(let c=1;c<=C;c++){
-            
             let lastImportantPoint = newImportantPoints[newImportantPoints.length-1];
             let [v1,v2] = getRelevantImportantPoint(c,arr[i-1][1],arr[i-1][0],importantPoints[i-1]);
 
@@ -57,9 +56,9 @@ function knapsackWeightsWithCache(arr,C){
 }
 
 
-// knapsackWeightsWithCache(challenge,2000000);
-knapsackWeightsWithCache(test,10000);
-knapsackWeightsWithCache(test2,6);
+knapsackWeightsWithCache(challenge,2000000);
+// knapsackWeightsWithCache(test,10000);
+// knapsackWeightsWithCache(test2,6);
 
 
 function getRelevantImportantPoint(w1,minus,plus,aaa){

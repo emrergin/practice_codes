@@ -17,24 +17,15 @@ async function asyncReadFile(filename) {
       console.log(`file parsing done.`);
 
       console.time('dijkstra')
-      const m1 = await dijkstra([...arr],1);
+      const m1 = dijkstra([...arr], 1);
       console.timeEnd('dijkstra')
 
       console.time('dijkstraHeap')
-      const m2 = await dijkstraHeap([...arr],1);
+      const m2 = dijkstraHeap([...arr], 1);
       console.timeEnd('dijkstraHeap');
 
-      
-      const mapsAreEqual = (m1, m2) => Array.from(m1.keys()).every((key) => (m1.get(key) === m2.get(key)));
-
-      console.log(mapsAreEqual(m1,m2));
-      console.log(m1.size===m2.size);
-
-      Array.from(m1.keys()).forEach(key=>
-        {if(m1.get(key)!==m2.get(key)){
-          console.log(key,m1.get(key),m2.get(key))
-        }}
-      )
+      const relatedVertices = [7,37,59,82,99,115,133,165,188,197];
+      console.log(relatedVertices.map(a=>m1.get(a)));
   
     } catch (err) {
       console.log(err);

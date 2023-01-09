@@ -28,8 +28,8 @@ export function naivePrim(G){
         T.add(minimumCostEdge);
         filteredEdges = G.filter(edge => (X.has(edge[0])&& !X.has(edge[1]))||(!X.has(edge[0])&& X.has(edge[1])));
     }
-
     return T;
+
 }
 
 export function heapPrim(G){
