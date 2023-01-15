@@ -5,8 +5,6 @@ let lines = readFileSync(`testmincut.txt`, 'utf-8')
                 .split(`\n`);
 
 const dataLength=lines.length;
-// console.log(dataLength);
-// const vertices = new Set(lines.map(a=>a[0]));
                 
 lines= lines.map(a=>a.trim().split(/[ \t]/)
                 .reduce((acc,curr,index,arr)=>{
@@ -17,12 +15,9 @@ lines= lines.map(a=>a.trim().split(/[ \t]/)
                 },[])).flatMap(a=>a);
 
 
-// console.log(lines)
 let minimumCut=Number.MAX_SAFE_INTEGER;
 let necessaryTimes = Math.ceil(combinations(dataLength,2)*Math.log(dataLength));
 for(let i=0;i<necessaryTimes;i++){
-    i%100===0? console.log(`${i}/${necessaryTimes}`,minimumCut/2):false;
-
 
     let ongoingEdges=[...lines];
     let vertices = new Set(ongoingEdges.map(a=>a[0]));
@@ -45,11 +40,9 @@ for(let i=0;i<necessaryTimes;i++){
             else{
                 return a;
             }
-        })
-        
+        });        
         
         U.union(U.indices.get(randomEdge[0]),U.indices.get(randomEdge[1]));
-        // numberOfVertices=U.store.filter(a=>a.parent===a.self).length;
         numberOfVertices--;
         ongoingEdges=ongoingEdges.filter(a=>U.find(U.indices.get(a[0])).self!==U.find(U.indices.get(a[1])).self);
 
