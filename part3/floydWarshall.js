@@ -5,7 +5,8 @@ let edges = readFileSync(`floyd_challenge4.txt`,'utf-8')
 
 
 let n = [...new Set(edges.flatMap(a=>[a.start,a.end]))].length;
-const edgeWeights = Array(n).fill().map(() => new Int8Array(n));
+
+const edgeWeights = Array(n).fill().map(() => new Int8Array(n).fill(-128));
 
 edges.forEach(a=>edgeWeights[a.start-1][a.end-1]=a.weight);
 
@@ -19,7 +20,7 @@ for(let v=0;v<n;v++){
             A_k_1[v][w]=0;
         }else{
             const relatedWeight = edgeWeights[v][w];
-            if (relatedWeight!==undefined){
+            if (relatedWeight!==-128){
                 A_k_1[v][w]=relatedWeight;
             }
             else{
@@ -28,10 +29,11 @@ for(let v=0;v<n;v++){
         }
     }
 }
-for (let k=1;k<=n;k++){
+for (let k=1;k<n+1;k++){
+    console.log(k);
     for(let v=0;v<n;v++){
         for(let w=0;w<n;w++){
-            A_k[v][w]=Math.min(A_k_1[v][w],Math.max(-32767,A_k_1[v][k-1]+A_k_1[k-1][w]));
+            A_k[v][w]=Math.max(-32768,Math.min(A_k_1[v][w],A_k_1[v][k-1]+A_k_1[k-1][w],32767));
         }
     }
     A_k_1=A_k;
