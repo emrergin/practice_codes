@@ -13,3 +13,4 @@
 - Map and Set has a maximum size of $2^{24}$, enforced by Node V8 engine, see: https://github.com/nodejs/node/issues/37320
 - Array uses 8 bytes per entry. When RAM is limited, it is better to use IntArray.
 - When dealing with IntArray, special care should be spared for the maximum and minimum values. Also, note that all the values are started as zero in this case.
+- When more RAM is necessary, ``--max-old-space-size`` optional argument can be used with node.
