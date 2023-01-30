@@ -10,6 +10,39 @@ function papadimitrou(filename) {
   let counter2 = 0;
   let counter2Max = 2 * n ** 2;
 
+  let satisfiable = false;
+  while (counter1 < counter1Max) {
+    let values = Array(n)
+      .fill()
+      .map(() => (Math.random() >= 0.5 ? true : false));
+    console.log(counter1);
+    counter2 = 0;
+    while (counter2 < counter2Max) {
+      let unsatisfiedIndex = null;
+      for (let i = 0; i < n; i++) {
+        let currentBool = testClause(lines[i], values);
+        if (!currentBool) {
+          unsatisfiedIndex = i;
+          break;
+        }
+      }
+      if (unsatisfiedIndex===null) {
+        console.log("satisfiable", values);
+        satisfiable = true;
+        return true;
+      }
+      let randomIndex = Math.floor(Math.random() * 2);
+      values[Math.abs(lines[unsatisfiedIndex][randomIndex])-1] =
+        !values[Math.abs(lines[unsatisfiedIndex][randomIndex])-1];
+      counter2++;
+    }
+    counter1++;
+  }
+  if (!satisfiable) {
+    console.log("not satisfiable");
+    return false;
+  }
+
   function testClause(line, values) {
     let value1 = values[Math.abs(line[0])-1];
     let value2 = values[Math.abs(line[1])-1];
@@ -19,59 +52,22 @@ function papadimitrou(filename) {
     if (line[1] < 0) {
       value2 = !value2;
     }
-    return value1 || value2;
-  }
-
-  let satisfiable = false;
-	// let values = [
-	// 	true,  false, true,  false,
-	// 	true,  true,  false, false,
-	// 	true,  false, false, false,
-	// 	true,  false, false, false,
-	// 	false, true,  false, false
-	// ];
-	// console.log(lines[15], values,testClause(lines[15], values));
-  outerloop: while (counter1 < counter1Max) {
-    let values = Array(n)
-      .fill()
-      .map(() => (Math.random() >= 0.5 ? true : false));
-    let check = true;
-    console.log(counter1);
-    counter2 = 0;
-    let unsatisfiedIndex = null;
-    while (counter2 < counter2Max) {
-      for (let i = 0; i < n; i++) {
-        let currentBool = testClause(lines[i], values);
-        if (!currentBool) {
-          check = false;
-          unsatisfiedIndex = i;
-          break;
-        }
-      }
-      if (check) {
-        console.log("satisfiable", values);
-        satisfiable = true;
-        break outerloop;
-      }
-      let randomIndex = Math.floor(Math.random() * 2);
-      values[Math.abs(lines[unsatisfiedIndex][randomIndex])] =
-        !values[Math.abs(lines[unsatisfiedIndex][randomIndex])];
-      counter2++;
-    }
-    counter1++;
-  }
-  if (!satisfiable) {
-    console.log("not satisfiable");
-  }
+    return (value1 || value2);
+  } 
 }
 
-// papadimitrou("satinput1.txt");
-papadimitrou("sattest1.txt");
-papadimitrou("sattest2.txt");
-// function convertLineToEdges(line){
-//     let twoEdges=[];
-//     twoEdges[0]=line
-// }
+function parseDataForKosaraju(filename){
 
-//test1 0 test2 1
-// console.log(testClause(lines[0],values));
+}
+
+
+const t1 = papadimitrou("satinput1.txt");
+const t2 = papadimitrou("satinput2.txt");
+const t3 = papadimitrou("satinput3.txt");
+const t4 = papadimitrou("satinput4.txt");
+const t5 = papadimitrou("satinput5.txt");
+const t6 = papadimitrou("satinput6.txt");
+console.log(t1,t2,t3,t4,t5,t6);
+// papadimitrou("sattest1.txt");//0
+// papadimitrou("sattest2.txt");//1
+// papadimitrou("sattest3.txt");//1
