@@ -19,25 +19,54 @@ function formatOne(filename){
 
 function bellmanHeldKarp(vertices,edgeWeights){
     let n=vertices.length;
-
-    function getNSizedSubsets(array,size){
-        let subsets = [];
-        let n=2**array.length;
-        for(let i=0;i<n;i++){
-            let b = i.toString(2).padStart(array.length, '0');        
-            let bcodes =b.split("").map(Number);
-            if(bcodes.reduce((a,b)=>a+b,0)===size-1){
-                // let csubset = array.filter((a,index)=>bcodes[index]===1);
-                subsets.push(bcodes);
-            }
-        }
-        return subsets;
+    
+    // let A_k_1 = Array(2**(n-1)-1).fill().map(() => Array(n-1));    
+    // let A_k = Array(2**(n-1)-1).fill().map(() => Array(n-1));
+    let A_k_1 = [];    
+    let A_k = [];
+    
+    for (let j=2; j<=n; j++){
+        let aBase = new Int8Array(n-1);
+        aBase[j-2]=1;
+        let currentSubsetIndex=findIndexOfSet(aBase,n);
+        if(A_k_1[currentSubsetIndex]===undefined){A_k_1[currentSubsetIndex]=Array(n-1);}
+        A_k_1[currentSubsetIndex][j-1]=edgeWeights[0][j-1];
     }
     
-    function findIndexOfSet(set,fullArray){
+    for (let s=3;s<=n;s++){
+        console.log("current size:",s);
+        let subsetOfSubsets = getNSizedSubsets(n,s);
+        
+        for(let subset of subsetOfSubsets){
+            for(let j=2;j<=n;j++){                
+                if(subset[j-2]===0){continue;}
+                let minValue = Infinity;
+                for(let k=2;k<=n;k++){
+                    if(subset[k-2]===0){continue;}
+                    if(j===k){continue;}
+                    let subsetset = structuredClone(subset);
+                    subsetset[j-2]=0;
+                    minValue=Math.min(minValue,A_k_1[findIndexOfSet(subsetset,n)][k-1]+edgeWeights[k-1][j-1]);
+                }
+                let currentSubsetIndex= findIndexOfSet(subset,n);
+                if(A_k[currentSubsetIndex]===undefined){A_k[currentSubsetIndex]=Array(n-1);}
+                A_k[currentSubsetIndex][j-1]=minValue;
+            }
+        }
+        A_k_1=A_k;
+    }
+    
+    let minValue= Infinity;
+    for (let j=2; j<=n; j++){
+        minValue = Math.min(A_k[2**(n-1)-2][j-1]+edgeWeights[j-1][0],minValue);        
+    }
+    
+    console.log(minValue);
+
+    function findIndexOfSet(set,len){
         let result = 0;
     
-        for(let i=0;i<fullArray.length;i++){
+        for(let i=0;i<len;i++){
             if (set[i]===1){
                 result+=2**(i);
             }
@@ -45,48 +74,19 @@ function bellmanHeldKarp(vertices,edgeWeights){
         return result-1;
     }
 
-    const fullArray=vertices.slice(1);
-    
-    let A = Array(2**(n-1)-1).fill().map(() => Array(n-1));    
-    
-    for (let j=2; j<=n; j++){
-        let Abase = Array(n-1).fill(0);
-        Abase[j-2]=1;
-        // console.log(Abase,findIndexOfSet(Abase,fullArray))
-        A[findIndexOfSet(Abase,fullArray)][j-1]=edgeWeights[0][j-1];
-    }
 
-    
-    
-    for (let s=3;s<=n;s++){
-        console.log("current size:",s);
-        let subsetOfSubsets = getNSizedSubsets(vertices.slice(1),s);
-        
-        for(let subset of subsetOfSubsets){
-            let nonZeroIndices = subset.map((a,index,arr)=>arr[index]>0?index+2:0).filter(a=>a>0);
-            // console.log(nonZeroIndices);
-            for(let j of nonZeroIndices){
-                // if(j===1){continue;}
-                let minValue = Infinity;
-                for(let k of nonZeroIndices){
-                    if(j===k){continue;}
-                    let subsetset = structuredClone(subset);
-                    subsetset[j-2]=0;
-                    // console.log(subset,subsetset)
-                    minValue=Math.min(minValue,A[findIndexOfSet(subsetset,fullArray)][k-1]+edgeWeights[k-1][j-1]);
-                }
-                A[findIndexOfSet(subset,fullArray)][j-1]=minValue;
+    function getNSizedSubsets(num,size){
+        let subsets = [];
+        let nn=2**(num-1);
+        for(let i=0;i<nn;i++){
+            let b = i.toString(2).padStart(num-1, '0');        
+            let bcodes =b.split("").map(Number);
+            if(bcodes.reduce((a,b)=>a+b,0)===size-1){
+                subsets.push(new Int8Array(bcodes));
             }
         }
-    }
-    // console.log(A);
-    
-    let minValue= Infinity;
-    for (let j=2; j<=n; j++){
-        minValue = Math.min(A[2**(n-1)-2][j-1]+edgeWeights[j-1][0],minValue);
-    }
-    
-    console.log(minValue);
+        return subsets;
+    }   
 }
 
 // formatOne(`tsptest1.txt`);
