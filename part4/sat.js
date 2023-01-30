@@ -11,8 +11,8 @@ function papadimitrou(filename) {
   let counter2Max = 2 * n ** 2;
 
   function testClause(line, values) {
-    let value1 = values[Math.abs(line[0])];
-    let value2 = values[Math.abs(line[1])];
+    let value1 = values[Math.abs(line[0])-1];
+    let value2 = values[Math.abs(line[1])-1];
     if (line[0] < 0) {
       value1 = !value1;
     }
@@ -23,7 +23,14 @@ function papadimitrou(filename) {
   }
 
   let satisfiable = false;
-
+	// let values = [
+	// 	true,  false, true,  false,
+	// 	true,  true,  false, false,
+	// 	true,  false, false, false,
+	// 	true,  false, false, false,
+	// 	false, true,  false, false
+	// ];
+	// console.log(lines[15], values,testClause(lines[15], values));
   outerloop: while (counter1 < counter1Max) {
     let values = Array(n)
       .fill()
@@ -33,7 +40,6 @@ function papadimitrou(filename) {
     counter2 = 0;
     let unsatisfiedIndex = null;
     while (counter2 < counter2Max) {
-      console.log(values);
       for (let i = 0; i < n; i++) {
         let currentBool = testClause(lines[i], values);
         if (!currentBool) {
@@ -61,7 +67,7 @@ function papadimitrou(filename) {
 
 // papadimitrou("satinput1.txt");
 papadimitrou("sattest1.txt");
-// papadimitrou("sattest2.txt");
+papadimitrou("sattest2.txt");
 // function convertLineToEdges(line){
 //     let twoEdges=[];
 //     twoEdges[0]=line
