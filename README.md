@@ -6,6 +6,9 @@
     - Also note that, some of the solutions depend on the global variables defined in the website itself, thus won't work independently, and may need the global scope in https://eloquentjavascript.net/code/.
 - [You Don't Know JS](https://github.com/getify/You-Dont-Know-JS) series, by **Kyle Simpson**. Currently only the first book is covered.
 
+# Related Courses
+- [The Missing Semester of Your CS Education](https://missing.csail.mit.edu/)
+
 ## More sources
 - Queue code is not mine, I got it from : https://www.javascripttutorial.net/javascript-queue/.
 
